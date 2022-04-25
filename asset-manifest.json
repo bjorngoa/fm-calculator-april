@@ -1,0 +1,12 @@
+{
+  "files": {
+    "main.js": "/fm-calculator-april/static/js/main.4e47a6e9.js",
+    "static/js/787.c12f8257.chunk.js": "/fm-calculator-april/static/js/787.c12f8257.chunk.js",
+    "index.html": "/fm-calculator-april/index.html",
+    "main.4e47a6e9.js.map": "/fm-calculator-april/static/js/main.4e47a6e9.js.map",
+    "787.c12f8257.chunk.js.map": "/fm-calculator-april/static/js/787.c12f8257.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/js/main.4e47a6e9.js"
+  ]
+}
