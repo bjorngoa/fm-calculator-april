@@ -1,8 +1,8 @@
-import { StyledButton, EqualButton, FunctionButton } from "../components/styles/Buttons.styled"
+/* import { StyledButton, EqualButton, FunctionButton } from "../components/styles/Buttons.styled" */
 
 
 
-const buttonValues = [
+export const buttonValues = [
     7,8,9,"DEL",
     4,5,6,"+"
     ,1,2,3,"-",
@@ -10,8 +10,9 @@ const buttonValues = [
     "RESET","=",
   ];
 
-const handleClick = (e) => {
+ /* const handleClick = (e) => {
     console.log('clicked')
+    alert("red")
 }
   
 export  const buttons = buttonValues.map((btn, i) => {
@@ -20,7 +21,7 @@ export  const buttons = buttonValues.map((btn, i) => {
             <FunctionButton 
                 value={btn}
                 key={i}
-                handleClick={handleClick}
+                
             ></FunctionButton>
         )
     } else if (btn === "=") {
@@ -41,4 +42,4 @@ export  const buttons = buttonValues.map((btn, i) => {
 
             )
         }
-  });
+  }); */

@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { ThemeProvider } from "styled-components";
 
-import { buttons } from "./components/Keyboard"
+import { buttonValues } from "./components/Keyboard"
 import GlobalStyles from "./components/styles/Global";
 import { defaultTheme, lightTheme, invertedTheme } from "./components/Themes/themes"
 import { ContainerKeybaordWrapper } from "./components/styles/KeyboardWrapper.styled";
@@ -12,6 +12,8 @@ import { HeaderContainer } from "./components/HeaderContainer";
 import { HeaderContainerStyled } from "./components/styles/HeaderContainer.styled";
 import { InputRangeSelectorContainer } from "./components/styles/InputRangeSelectorContainer";
 import { HeaderSelection } from "./components/HeaderSelction";
+import { Container } from "./components/styles/Container.styled";
+import { EqualButton, FunctionButton, StyledButton } from "./components/styles/Buttons.styled";
 
 
 
@@ -19,6 +21,18 @@ import { HeaderSelection } from "./components/HeaderSelction";
 function App() {
   const [theme, setTheme] = useState({ value: "1" })
 
+
+  
+  
+
+  const [inpD, setInpDP] = useState({
+    number: 0,
+    operator: '',
+    result: 0,
+  })
+
+
+console.log(inpD)
   const changeTheme = (e) => {
     const { value } = e.target
     setTheme((prevTheme) => {
@@ -27,8 +41,147 @@ function App() {
   }
 
 
+  const toLocaleString = (number) => 
+  String(number).replace(/(?<!\..*)(\d)(?=(?:\d{3})+(?:\.|$))/g, "$1 ");
+  
+  const removeSpaces = (number) => number.toString().replace(/\s/g, '');
+
+  const numbClickHandler = (e) => {
+    e.preventDefault()
+    const value = e.target.innerHtml
+console.log(value)
+    if (removeSpaces(inpD.number).length < 16) {
+      setInpDP({
+        ...inpD,
+        number:
+          inpD.number === 0 && value === '0'
+          ? '0' 
+          : removeSpaces(inpD.number) % 1 === 0
+          ? toLocaleString(Number(removeSpaces(inpD.number + value)))
+          : toLocaleString(inpD.number + value),
+        result: !inpD.operator ? 0 : inpD.result,
+      })
+      console.log("Clicked")
+    }
+  }
+
+  
+
+
+
+  const handleReset = () => {
+    console.log("reset btn!")
+    setInpDP((prevInpDPValue) => {
+      return { ...prevInpDPValue, number: 0, operator: '', result: 0}
+    })
+  }
+
+  const handleDelete = () => {
+    console.log("Will Delete!")
+    setInpDP({
+      ...inpD,
+      operator: '',
+      number: 0,
+      result: 0,
+    })
+  }
+
+const handleEqual = () => {
+  console.log('=')
+  if (inpD.operator && inpD.number) {
+    const math = (a, b, sign) => 
+    sign === '+'
+    ? a + b
+    : sign === '-'
+    ? a - b
+    : sign === 'x'
+    ? a * b
+    : a / b
+
+    inpD({
+      ...inpD,
+      result:
+        inpD.number === '0' && inpD.operator === '/'
+        ? "Can't devide with 0"
+        : toLocaleString(
+          math(
+            Number(removeSpaces(inpD.result)),
+            Number(removeSpaces(inpD.number)),
+            inpD.operator
+          )
+        ),
+      operator: '',
+      number: 0,
+    })
+  }
+}
+
+const opHandler = (e) => {
+  e.preventDefault()
+  const value = e.target.innerHtml
+
+  setInpDP({
+    ...inpD,
+    operator: value,
+    result:
+      !inpD.result && inpD.number
+      ? inpD.number
+      : inpD.result,
+    number: 0,
+  })
+}
+
+const commaHandler = (e) => {
+  e.preventDefault()
+  console.log('.')
+  const value = e.target.innerHtml
+
+
+  setInpDP({
+    ...inpD,
+    number: !inpD.number.toString().includes('.')
+    ? inpD.number + value
+    :inpD.number,
+  })
+}
+
+
+
+  const buttons = buttonValues.flat().map((btn, i) => {
+    if (btn === 'RESET' || btn === 'DEL') {
+
+      return (
+        <FunctionButton
+        value={btn}
+        key={i}
+        handleClick={btn === 'RESET' ? handleReset : handleDelete}
+        ></FunctionButton>
+      )
+    } else if (btn === '=') {
+      return (
+       <EqualButton 
+      value={btn}
+      key={i}
+      handleClick={handleEqual}></EqualButton>
+      )
+    } else {
+      return ( <StyledButton
+      value={btn}
+      key={i}
+      handleClick={btn === '/' || btn === '+' || btn === '-' || btn === 'x'
+        ? opHandler
+        : btn === '.'
+        ? commaHandler
+        : numbClickHandler
+      }></StyledButton>
+      )
+    }
+  }) 
+
+
   return (
     <ThemeProvider theme={theme.value === "1" ? defaultTheme : theme.value === "2" ? lightTheme : invertedTheme} >
+        <Container>
         <GlobalStyles />
         <InputRangeSelectorContainer>
         <HeaderSelection>1</HeaderSelection>
@@ -42,10 +195,11 @@ function App() {
         </label>
         </HeaderContainerStyled>
         
-        <StyledInputDisplay />
+        <StyledInputDisplay value={inpD} />
         <ContainerKeybaordWrapper>
           {buttons}
-        </ContainerKeybaordWrapper>      
+        </ContainerKeybaordWrapper>
+        </Container>      
     </ThemeProvider>
   );
 }

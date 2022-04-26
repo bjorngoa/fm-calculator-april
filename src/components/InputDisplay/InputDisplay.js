@@ -1,7 +1,7 @@
-import React from "react"
+import React from 'react'
 
-export default function InputDisplay({ }) {
-    
+export default function CalcInputDisplay({ className, value }) {
+  const { number, result } = value
 
-    return <p></p>
+  return <h2 className={className}>{number ? number : result}</h2>
 }

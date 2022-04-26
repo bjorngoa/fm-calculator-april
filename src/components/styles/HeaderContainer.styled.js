@@ -8,6 +8,7 @@ export const HeaderContainerStyled = styled.div`
     align-items: center;
     
     
+    
     color: ${(props) => props.theme.headerColor};
     
 
