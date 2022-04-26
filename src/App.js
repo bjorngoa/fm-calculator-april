@@ -48,8 +48,8 @@ console.log(inpD)
 
   const numbClickHandler = (e) => {
     e.preventDefault()
-    const value = e.target.innerHtml
-console.log(value)
+    const value = e.target.innerHTML
+      
     if (removeSpaces(inpD.number).length < 16) {
       setInpDP({
         ...inpD,
@@ -61,7 +61,7 @@ console.log(value)
           : toLocaleString(inpD.number + value),
         result: !inpD.operator ? 0 : inpD.result,
       })
-      console.log("Clicked")
+      
     }
   }
 
@@ -70,14 +70,13 @@ console.log(value)
 
 
   const handleReset = () => {
-    console.log("reset btn!")
     setInpDP((prevInpDPValue) => {
       return { ...prevInpDPValue, number: 0, operator: '', result: 0}
     })
   }
 
   const handleDelete = () => {
-    console.log("Will Delete!")
+    
     setInpDP({
       ...inpD,
       operator: '',
@@ -98,7 +97,7 @@ const handleEqual = () => {
     ? a * b
     : a / b
 
-    inpD({
+    setInpDP({
       ...inpD,
       result:
         inpD.number === '0' && inpD.operator === '/'
@@ -118,7 +117,7 @@ const handleEqual = () => {
 
 const opHandler = (e) => {
   e.preventDefault()
-  const value = e.target.innerHtml
+  const value = e.target.innerHTML
 
   setInpDP({
     ...inpD,
@@ -134,7 +133,7 @@ const opHandler = (e) => {
 const commaHandler = (e) => {
   e.preventDefault()
   console.log('.')
-  const value = e.target.innerHtml
+  const value = e.target.innerHTML
 
 
   setInpDP({
